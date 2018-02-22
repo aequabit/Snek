@@ -81,8 +81,14 @@ namespace SnakeGame.Rendering
 
         private static Listard<Location> RenderLocation(Snake snake)
         {
-            var location = snake.GetLocation();
-            var waypoints = snake.GetWaypoints();
+            // var location = snake.GetLocation();
+            // var waypoints = snake.GetWaypoints();
+
+            var location = new Location() { X = 10, Y = 10 };
+            var waypoints = new Listard<Waypoint>() {
+                new Waypoint() { X = 5, Y = 10, Direction = Direction.Right },
+                new Waypoint() { X = 5, Y = 5, Direction = Direction.Down }
+            };
 
             var locations = new Listard<Location>();
 
