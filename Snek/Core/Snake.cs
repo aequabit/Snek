@@ -1,49 +1,58 @@
 using System;
-using SnakeGame.Core;
 using Listard;
+using Snek.Entities;
 
-namespace SnakeGame.Entities
+namespace Snek.Core
 {
     public class Snake : IEntity
     {
         /// <summary>
-        /// The snake's location.
+        ///     The snake's location.
         /// </summary>
-        private Location Location;
+        private readonly Location Location;
 
         /// <summary>
-        /// Waypoints of the snake.
+        ///     Waypoints of the snake.
         /// </summary>
-        private Listard<Waypoint> Waypoints;
+        private readonly Listard<Waypoint> Waypoints;
 
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         public Snake()
         {
-            Location = new Location() { X = 10, Y = 10 };
+            Location = new Location {X = 10, Y = 10};
             Waypoints = new Listard<Waypoint>();
         }
 
         /// <summary>
-        /// Gets the snake's location.
+        ///     Gets the snake's location.
         /// </summary>
         /// <returns>The snake's location.</returns>
-        public Location GetLocation() => Location;
+        public Location GetLocation()
+        {
+            return Location;
+        }
 
         /// <summary>
-        /// Gets the snake's waypoints.
+        ///     Gets the snake's waypoints.
         /// </summary>
         /// <returns>The snake's waypoints.</returns>
-        public Listard<Waypoint> GetWaypoints() => Waypoints;
+        public Listard<Waypoint> GetWaypoints()
+        {
+            return Waypoints;
+        }
 
         /// <summary>
-        /// Increases the snake's length by one.
+        ///     Increases the snake's length by one.
         /// </summary>
-        public void Grow() => Grow(1);
+        public void Grow()
+        {
+            Grow(1);
+        }
 
         /// <summary>
-        /// Increases the snake's length by <c>length</c>.
+        ///     Increases the snake's length by <c>length</c>.
         /// </summary>
         /// <param name="length"></param>
         public void Grow(int length)

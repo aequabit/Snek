@@ -1,45 +1,60 @@
 using System.Threading;
-using SnakeGame.Core;
-using SnakeGame.Entities;
-using SnakeGame.Rendering;
 using Listard;
+using Snek.Core;
+using Snek.Entities;
+using Snek.Rendering;
 
-namespace SnakeGame
+namespace Snek
 {
     public class Game
     {
         /// <summary>
-        /// Width of the game.
+        ///     Border collision event handler delegate.
         /// </summary>
-        private int Width;
+        /// <param name="entity">Entity that collided with the border.</param>
+        /// <param name="x">X coordinate of the collision.</param>
+        /// <param name="y">Y coordinate of the collision.</param>
+        public delegate void BorderCollisionHandler(IEntity entity, int x, int y);
 
         /// <summary>
-        /// Height of the game.
+        ///     Entity collision event handler delegate.
         /// </summary>
-        private int Height;
+        /// <param name="entity">Entity that collided with another entity.</param>
+        /// <param name="collided">Entity <c>entity</c> collided with.</param>
+        public delegate void EntityCollisionHandler(IEntity entity, IEntity collided);
 
         /// <summary>
-        /// Delay between game update cylces.
-        /// </summary>
-        private int CycleDelay;
-
-        /// <summary>
-        /// Game board.
+        ///     Game board.
         /// </summary>
         private Board Board;
 
         /// <summary>
-        /// The snake.
+        ///     Delay between game update cylces.
         /// </summary>
-        private Snake Snake;
+        private readonly int CycleDelay;
 
         /// <summary>
-        /// Entities in the game.
+        ///     Entities in the game.
         /// </summary>
         private Listard<IEntity> Entities;
 
         /// <summary>
-        /// Constructor.
+        ///     Height of the game.
+        /// </summary>
+        private readonly int Height;
+
+        /// <summary>
+        ///     The snake.
+        /// </summary>
+        private Snake Snake;
+
+        /// <summary>
+        ///     Width of the game.
+        /// </summary>
+        private readonly int Width;
+
+        /// <summary>
+        ///     Constructor.
         /// </summary>
         /// <param name="width">Width of the game.</param>
         /// <param name="height">Height of the game.</param>
@@ -51,7 +66,7 @@ namespace SnakeGame
         }
 
         /// <summary>
-        /// Cosntructor.
+        ///     Cosntructor.
         /// </summary>
         /// <param name="width">Width of the game.</param>
         /// <param name="height">Height of the game.</param>
@@ -64,32 +79,17 @@ namespace SnakeGame
         }
 
         /// <summary>
-        /// Entity collision event handler delegate.
-        /// </summary>
-        /// <param name="entity">Entity that collided with another entity.</param>
-        /// <param name="collided">Entity <c>entity</c> collided with.</param>
-        public delegate void EntityCollisionHandler(IEntity entity, IEntity collided);
-
-        /// <summary>
-        /// Entity collision event handler.
+        ///     Entity collision event handler.
         /// </summary>
         public event EntityCollisionHandler OnEntityCollision;
 
         /// <summary>
-        /// Border collision event handler delegate.
-        /// </summary>
-        /// <param name="entity">Entity that collided with the border.</param>
-        /// <param name="x">X coordinate of the collision.</param>
-        /// <param name="y">Y coordinate of the collision.</param>
-        public delegate void BorderCollisionHandler(IEntity entity, int x, int y);
-
-        /// <summary>
-        /// Border collision event handler.
+        ///     Border collision event handler.
         /// </summary>
         public event BorderCollisionHandler OnBoarderCollision;
 
         /// <summary>
-        /// Runs the game loop.
+        ///     Runs the game loop.
         /// </summary>
         public void Run()
         {
@@ -104,7 +104,7 @@ namespace SnakeGame
         }
 
         /// <summary>
-        /// Runs a game update cycle.
+        ///     Runs a game update cycle.
         /// </summary>
         private void Cycle()
         {

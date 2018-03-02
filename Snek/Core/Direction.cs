@@ -1,4 +1,4 @@
-namespace SnakeGame.Core
+namespace Snek.Core
 {
     public enum Direction
     {

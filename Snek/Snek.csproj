@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{6FEB32A8-2E44-4D81-A969-CE82DD666028}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SnakeGame</RootNamespace>
-    <AssemblyName>Snake</AssemblyName>
+    <RootNamespace>Snek</RootNamespace>
+    <AssemblyName>Snek</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -38,9 +38,9 @@
     <Compile Include="Core\Board.cs" />
     <Compile Include="Core\Direction.cs" />
     <Compile Include="Core\Location.cs" />
+    <Compile Include="Core\Snake.cs" />
     <Compile Include="Core\Waypoint.cs" />
     <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\Snake.cs" />
     <Compile Include="Rendering\Renderer.cs" />
     <Compile Include="..\..\Listard\Listard\Listard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

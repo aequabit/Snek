@@ -1,6 +1,6 @@
-using SnakeGame.Core;
+using Snek.Core;
 
-namespace SnakeGame.Entities
+namespace Snek.Entities
 {
     public interface IEntity
     {

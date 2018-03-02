@@ -1,36 +1,29 @@
 using System;
-using SnakeGame.Core;
-using SnakeGame.Entities;
 using Listard;
+using Snek.Core;
 
-namespace SnakeGame.Rendering
+namespace Snek.Rendering
 {
     public static class Renderer
     {
         /// <summary>
-        /// The current render board.
+        ///     The current render board.
         /// </summary>
         private static Board Board;
 
         /// <summary>
-        /// Renders a board.
+        ///     Renders a board.
         /// </summary>
         /// <param name="board">Board to render.</param>
         public static void Render(Board board)
         {
             Board = board;
 
-            if (OSInfo.IsWindows())
-            {
-                Console.WindowWidth = board.Width;
-                Console.WindowHeight = board.Height;
-            }
-
             Console.BackgroundColor = ConsoleColor.Yellow;
         }
 
         /// <summary>
-        /// Renderes a snake.
+        ///     Renderes a snake.
         /// </summary>
         /// <param name="snake">Snake to render.</param>
         public static void Render(Snake snake)
@@ -44,15 +37,11 @@ namespace SnakeGame.Rendering
             for (var i = 0; i < Board.Height; i++)
             {
                 for (var j = 0; j < Board.Width; j++)
-                {
                     foreach (Location loc in renderLocation)
-                    {
                         if (loc.X == j && loc.Y == i)
                             Console.Write('■');
                         else
                             Console.Write(' ');
-                    }
-                }
 
                 Console.Write('\n');
             }
@@ -72,7 +61,7 @@ namespace SnakeGame.Rendering
         }
 
         /// <summary>
-        /// Clears the already rendered output.
+        ///     Clears the already rendered output.
         /// </summary>
         public static void Clear()
         {
@@ -84,10 +73,11 @@ namespace SnakeGame.Rendering
             // var location = snake.GetLocation();
             // var waypoints = snake.GetWaypoints();
 
-            var location = new Location() { X = 10, Y = 10 };
-            var waypoints = new Listard<Waypoint>() {
-                new Waypoint() { X = 5, Y = 10, Direction = Direction.Right },
-                new Waypoint() { X = 5, Y = 5, Direction = Direction.Down }
+            var location = new Location {X = 10, Y = 10};
+            var waypoints = new Listard<Waypoint>
+            {
+                new Waypoint {X = 5, Y = 10, Direction = Direction.Right},
+                new Waypoint {X = 5, Y = 5, Direction = Direction.Down}
             };
 
             var locations = new Listard<Location>();
@@ -96,27 +86,26 @@ namespace SnakeGame.Rendering
             {
                 var waypoint = waypoints[i];
 
-                locations.Add(new Location() { X = waypoint.X, Y = waypoint.Y });
+                locations.Add(new Location {X = waypoint.X, Y = waypoint.Y});
 
-                if (waypoint.Direction == Direction.Left)
+                switch (waypoint.Direction)
                 {
-                    for (var j = location.X; j < waypoint.X; j++)
-                        locations.Add(new Location() { X = j, Y = waypoint.Y });
-                }
-                if (waypoint.Direction == Direction.Right)
-                {
-                    for (var j = location.X; j > waypoint.X; j--)
-                        locations.Add(new Location() { X = j, Y = waypoint.Y });
-                }
-                if (waypoint.Direction == Direction.Down)
-                {
-                    for (var j = location.Y; j > waypoint.Y; j--)
-                        locations.Add(new Location() { X = waypoint.X, Y = j });
-                }
-                if (waypoint.Direction == Direction.Up)
-                {
-                    for (var j = location.Y; j < waypoint.Y; j++)
-                        locations.Add(new Location() { X = waypoint.X, Y = j });
+                    case Direction.Left:
+                        for (var j = location.X; j < waypoint.X; j++)
+                            locations.Add(new Location {X = j, Y = waypoint.Y});
+                        break;
+                    case Direction.Right:
+                        for (var j = location.X; j > waypoint.X; j--)
+                            locations.Add(new Location {X = j, Y = waypoint.Y});
+                        break;
+                    case Direction.Down:
+                        for (var j = location.Y; j > waypoint.Y; j--)
+                            locations.Add(new Location {X = waypoint.X, Y = j});
+                        break;
+                    case Direction.Up:
+                        for (var j = location.Y; j < waypoint.Y; j++)
+                            locations.Add(new Location {X = waypoint.X, Y = j});
+                        break;
                 }
             }
 

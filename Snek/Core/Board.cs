@@ -1,19 +1,9 @@
-namespace SnakeGame.Core
+namespace Snek.Core
 {
     public class Board
     {
         /// <summary>
-        /// Width of the board.
-        /// </summary>
-        public int Width { get; private set; }
-
-        /// <summary>
-        /// Height of the board.
-        /// </summary>
-        public int Height { get; private set; }
-
-        /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         /// <param name="width">Width of the board.</param>
         /// <param name="height">Height of the board.</param>
@@ -22,5 +12,15 @@ namespace SnakeGame.Core
             Width = width;
             Height = height;
         }
+
+        /// <summary>
+        ///     Width of the board.
+        /// </summary>
+        public int Width { get; }
+
+        /// <summary>
+        ///     Height of the board.
+        /// </summary>
+        public int Height { get; }
     }
 }
