@@ -1,7 +1,9 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snek", "Snek\Snek.csproj", "{6FEB32A8-2E44-4D81-A969-CE82DD666028}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Listard", "Listard\Listard\Listard.csproj", "{D088EB91-00DC-4615-8CC9-8AB229C0821D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,5 +15,9 @@ Global
 		{6FEB32A8-2E44-4D81-A969-CE82DD666028}.Debug|x86.Build.0 = Debug|x86
 		{6FEB32A8-2E44-4D81-A969-CE82DD666028}.Release|x86.ActiveCfg = Release|x86
 		{6FEB32A8-2E44-4D81-A969-CE82DD666028}.Release|x86.Build.0 = Release|x86
+		{D088EB91-00DC-4615-8CC9-8AB229C0821D}.Debug|x86.ActiveCfg = Debug|x86
+		{D088EB91-00DC-4615-8CC9-8AB229C0821D}.Debug|x86.Build.0 = Debug|x86
+		{D088EB91-00DC-4615-8CC9-8AB229C0821D}.Release|x86.ActiveCfg = Release|x86
+		{D088EB91-00DC-4615-8CC9-8AB229C0821D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal

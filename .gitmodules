@@ -1,0 +1,3 @@
+[submodule "Listard"]
+	path = Listard
+	url = git@github.com:aequabit/Listard.git

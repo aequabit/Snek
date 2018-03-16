@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
-using System.Reflection;
 using Listard;
-using Snek.Core;
+using Snek.Entities;
 
 namespace Snek
 {
@@ -32,19 +30,13 @@ namespace Snek
 
             const int width = 32;
             const int height = 32;
-            var waypoints = new Listard<Waypoint>();
+            var locations = new Listard<Location>();
+            var direction = Direction.Right;
 
-            var current = new Waypoint()
+            locations.Add(new Location
             {
                 X = width / 2,
-                Y = height / 2,
-                Direction = Direction.Right
-            };
-
-            waypoints.Add(new Waypoint()
-            {
-                X = current.X,
-                Y = current.Y
+                Y = height / 2
             });
 
             var time = Unix();
@@ -59,44 +51,49 @@ namespace Snek
             {
                 while (true)
                 {
-                    foreach (Waypoint waypoint in waypoints)
+                    foreach (Location location in locations)
                     {
-                        Console.SetCursorPosition(waypoint.X, waypoint.Y);
+                        Console.SetCursorPosition(location.X, location.Y);
                         Console.Write('x');
                     }
 
-                    Console.SetCursorPosition(current.X, current.Y);
-                    Console.Write(' ');
+//                    Console.SetCursorPosition(current.X, current.Y);
+//                    Console.Write(' ');
 
                     if (Unix() - time > 500)
                     {
                         time = Unix();
 
-                        switch (current.Direction)
+                        var newLocation = locations.Last();
+
+                        switch (direction)
                         {
                             case Direction.Left:
-                                current.X--;
+                                newLocation.X--;
                                 break;
                             case Direction.Right:
-                                current.X++;
+                                newLocation.X++;
                                 break;
                             case Direction.Up:
-                                current.Y--;
+                                newLocation.Y--;
                                 break;
                             case Direction.Down:
-                                current.Y++;
+                                newLocation.Y++;
                                 break;
                         }
 
-                        if (current.X < 0)
-                            current.X = current.X + width;
-                        else if (current.X >= width)
-                            current.X = current.X - width;
+                        // TODO: simplify
+                        if (newLocation.X < 0)
+                            newLocation.X = newLocation.X + width;
+                        else if (newLocation.X >= width)
+                            newLocation.X = newLocation.X - width;
 
-                        if (current.Y < 0)
-                            current.Y = current.Y + height;
-                        else if (current.Y >= height)
-                            current.Y = current.Y - height;
+                        if (newLocation.Y < 0)
+                            newLocation.Y = newLocation.Y + height;
+                        else if (newLocation.Y >= height)
+                            newLocation.Y = newLocation.Y - height;
+
+                        locations.Add(newLocation);
                     }
 
                     // TODO: draw difference when direction wasn't changed yet
@@ -106,47 +103,18 @@ namespace Snek
                     // TODO: draw through borders
                     // TODO: collision events
 
-                    var locations = new Listard<Location>();
-
-                    for (var i = waypoints.Count - 1; i >= 0; i--)
-                    {
-                        var waypoint = waypoints[i];
-
-                        var nextPoint = (i < waypoints.Count - 1) ? waypoints[i + 1] : current;
-
-                        locations.Add(new Location() {X = waypoint.X, Y = waypoint.Y});
-
-                        switch (waypoint.Direction)
-                        {
-                            case Direction.Left:
-                                for (var j = nextPoint.X; j < waypoint.X; j++)
-                                    locations.Add(new Location() {X = j, Y = waypoint.Y});
-                                break;
-                            case Direction.Right:
-                                for (var j = nextPoint.X; j > waypoint.X; j--)
-                                    locations.Add(new Location() {X = j, Y = waypoint.Y});
-                                break;
-                            case Direction.Up:
-                                for (var j = nextPoint.Y; j < waypoint.Y; j++)
-                                    locations.Add(new Location() {X = waypoint.X, Y = j});
-                                break;
-                            case Direction.Down:
-                                for (var j = nextPoint.Y; j > waypoint.Y; j--)
-                                    locations.Add(new Location() {X = waypoint.X, Y = j});
-                                break;
-                        }
-                    }
+                    var last = locations.Last();
 
                     foreach (Location location in locations)
                     {
-                        if (location.X == current.X && location.Y == current.Y)
+                        if (location.X == last.X && location.Y == last.Y)
                             continue;
 
                         Console.SetCursorPosition(location.X, location.Y);
                         Console.Write('#');
                     }
 
-                    Console.SetCursorPosition(current.X, current.Y);
+                    Console.SetCursorPosition(last.X, last.Y);
                     Console.Write('■');
 
                     // for (var i = 0; i <= height; i++)
@@ -172,14 +140,7 @@ namespace Snek
 
                 if (!KeyToDirection.ContainsKey(key.Key)) continue;
 
-                current.Direction = KeyToDirection[key.Key];
-
-                waypoints.Add(new Waypoint()
-                {
-                    X = current.X,
-                    Y = current.Y,
-                    Direction = current.Direction
-                });
+                direction = KeyToDirection[key.Key];
             }
             // var waypoints = new Listard<Waypoint>();
 
@@ -266,6 +227,13 @@ namespace Snek
         {
             public Direction Direction;
 
+            public int X;
+
+            public int Y;
+        }
+
+        private struct Location
+        {
             public int X;
 
             public int Y;

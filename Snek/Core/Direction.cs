@@ -1,4 +1,4 @@
-namespace Snek.Core
+﻿namespace Snek.Core
 {
     public enum Direction
     {
