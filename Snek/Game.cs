@@ -26,32 +26,32 @@ namespace Snek
         /// <summary>
         ///     Game board.
         /// </summary>
-        private Board Board;
+        private Board _board;
 
         /// <summary>
         ///     Delay between game update cylces.
         /// </summary>
-        private readonly int CycleDelay;
+        private readonly int _cycleDelay;
 
         /// <summary>
         ///     Entities in the game.
         /// </summary>
-        private Listard<IEntity> Entities;
+        private Listard<IEntity> _entities;
 
         /// <summary>
         ///     Height of the game.
         /// </summary>
-        private readonly int Height;
+        private readonly int _height;
 
         /// <summary>
         ///     The snake.
         /// </summary>
-        private Snake Snake;
+        private Snake _snake;
 
         /// <summary>
         ///     Width of the game.
         /// </summary>
-        private readonly int Width;
+        private readonly int _width;
 
         /// <summary>
         ///     Constructor.
@@ -60,9 +60,9 @@ namespace Snek
         /// <param name="height">Height of the game.</param>
         public Game(int width, int height)
         {
-            Width = width;
-            Height = height;
-            CycleDelay = 500;
+            _width = width;
+            _height = height;
+            _cycleDelay = 500;
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace Snek
         /// <param name="cycleDelay">Delay between game update cycles.</param>
         public Game(int width, int height, int cycleDelay)
         {
-            Width = width;
-            Height = height;
-            CycleDelay = cycleDelay;
+            _width = width;
+            _height = height;
+            _cycleDelay = cycleDelay;
         }
 
         /// <summary>
@@ -93,13 +93,13 @@ namespace Snek
         /// </summary>
         public void Run()
         {
-            Board = new Board(Width, Height);
-            Snake = new Snake();
+            _board = new Board(_width, _height);
+            _snake = new Snake();
 
             while (true)
             {
                 Cycle();
-                Thread.Sleep(CycleDelay);
+                Thread.Sleep(_cycleDelay);
             }
         }
 
@@ -109,8 +109,8 @@ namespace Snek
         private void Cycle()
         {
             Renderer.Clear();
-            Renderer.Render(Board);
-            Renderer.Render(Snake);
+            Renderer.Render(_board);
+            Renderer.Render(_snake);
         }
     }
 }

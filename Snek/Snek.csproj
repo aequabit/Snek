@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -29,11 +29,15 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Listard, Version=1.0.6635.25170, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\Listard\Listard\bin\Debug\Listard.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
-    <Compile Include="OSInfo.cs" />
+    <Compile Include="OsInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Core\Board.cs" />
     <Compile Include="Core\Direction.cs" />
@@ -42,7 +46,6 @@
     <Compile Include="Core\Waypoint.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Rendering\Renderer.cs" />
-    <Compile Include="..\..\Listard\Listard\Listard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

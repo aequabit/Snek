@@ -9,7 +9,7 @@ namespace Snek.Rendering
         /// <summary>
         ///     The current render board.
         /// </summary>
-        private static Board Board;
+        private static Board _board;
 
         /// <summary>
         ///     Renders a board.
@@ -17,7 +17,7 @@ namespace Snek.Rendering
         /// <param name="board">Board to render.</param>
         public static void Render(Board board)
         {
-            Board = board;
+            _board = board;
 
             Console.BackgroundColor = ConsoleColor.Yellow;
         }
@@ -28,15 +28,14 @@ namespace Snek.Rendering
         /// <param name="snake">Snake to render.</param>
         public static void Render(Snake snake)
         {
-            if (Board == null)
+            if (_board == null)
                 throw new Exception("Board not set"); // TODO: custom exception
 
-            var location = snake.GetLocation();
             var renderLocation = RenderLocation(snake);
 
-            for (var i = 0; i < Board.Height; i++)
+            for (var i = 0; i < _board.Height; i++)
             {
-                for (var j = 0; j < Board.Width; j++)
+                for (var j = 0; j < _board.Width; j++)
                     foreach (Location loc in renderLocation)
                         if (loc.X == j && loc.Y == i)
                             Console.Write('■');

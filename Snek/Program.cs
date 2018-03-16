@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
+using System.Reflection;
+using Listard;
+using Snek.Core;
 
 namespace Snek
 {
@@ -14,7 +18,7 @@ namespace Snek
             {ConsoleKey.DownArrow, Direction.Down}
         };
 
-        private static double Unix()
+        public static double Unix()
         {
             return DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
         }
@@ -22,60 +26,128 @@ namespace Snek
         public static void Main(string[] args)
         {
             Console.Title = "( ͡° ͜ʖ ͡°)";
+            Console.CursorVisible = false;
 
             Console.Clear();
 
             const int width = 32;
             const int height = 32;
+            var waypoints = new Listard<Waypoint>();
 
-            var direction = Direction.Right;
-            var x = width / 2;
-            var y = height / 2;
+            var current = new Waypoint()
+            {
+                X = width / 2,
+                Y = height / 2,
+                Direction = Direction.Right
+            };
+
+            waypoints.Add(new Waypoint()
+            {
+                X = current.X,
+                Y = current.Y
+            });
 
             var time = Unix();
+
+            for (var i = 0; i < height; i++)
+            {
+                Console.SetCursorPosition(width, i);
+                Console.Write('|');
+            }
 
             new Thread(() =>
             {
                 while (true)
                 {
-                    Console.SetCursorPosition(x, y);
+                    foreach (Waypoint waypoint in waypoints)
+                    {
+                        Console.SetCursorPosition(waypoint.X, waypoint.Y);
+                        Console.Write('x');
+                    }
+
+                    Console.SetCursorPosition(current.X, current.Y);
                     Console.Write(' ');
-                    Console.SetCursorPosition(width, height);
 
                     if (Unix() - time > 500)
                     {
                         time = Unix();
 
-                        switch (direction)
+                        switch (current.Direction)
                         {
-                            case Direction.Right:
-                                x++;
-                                break;
                             case Direction.Left:
-                                x--;
+                                current.X--;
+                                break;
+                            case Direction.Right:
+                                current.X++;
                                 break;
                             case Direction.Up:
-                                y--;
+                                current.Y--;
                                 break;
                             case Direction.Down:
-                                y++;
+                                current.Y++;
                                 break;
                         }
 
-                        if (x < 0)
-                            x = x + width;
-                        else if (x >= width)
-                            x = x - width;
+                        if (current.X < 0)
+                            current.X = current.X + width;
+                        else if (current.X >= width)
+                            current.X = current.X - width;
 
-                        if (y < 0)
-                            y = y + height;
-                        else if (y >= height)
-                            y = y - height;
+                        if (current.Y < 0)
+                            current.Y = current.Y + height;
+                        else if (current.Y >= height)
+                            current.Y = current.Y - height;
                     }
 
-                    Console.SetCursorPosition(x, y);
+                    // TODO: draw difference when direction wasn't changed yet
+                    // TODO: limit length
+                    // TODO: disallow direction change to opposite direction
+                    // TODO: add clearing of empty fields
+                    // TODO: draw through borders
+                    // TODO: collision events
+
+                    var locations = new Listard<Location>();
+
+                    for (var i = waypoints.Count - 1; i >= 0; i--)
+                    {
+                        var waypoint = waypoints[i];
+
+                        var nextPoint = (i < waypoints.Count - 1) ? waypoints[i + 1] : current;
+
+                        locations.Add(new Location() {X = waypoint.X, Y = waypoint.Y});
+
+                        switch (waypoint.Direction)
+                        {
+                            case Direction.Left:
+                                for (var j = nextPoint.X; j < waypoint.X; j++)
+                                    locations.Add(new Location() {X = j, Y = waypoint.Y});
+                                break;
+                            case Direction.Right:
+                                for (var j = nextPoint.X; j > waypoint.X; j--)
+                                    locations.Add(new Location() {X = j, Y = waypoint.Y});
+                                break;
+                            case Direction.Up:
+                                for (var j = nextPoint.Y; j < waypoint.Y; j++)
+                                    locations.Add(new Location() {X = waypoint.X, Y = j});
+                                break;
+                            case Direction.Down:
+                                for (var j = nextPoint.Y; j > waypoint.Y; j--)
+                                    locations.Add(new Location() {X = waypoint.X, Y = j});
+                                break;
+                        }
+                    }
+
+                    foreach (Location location in locations)
+                    {
+                        if (location.X == current.X && location.Y == current.Y)
+                            continue;
+
+                        Console.SetCursorPosition(location.X, location.Y);
+                        Console.Write('#');
+                    }
+
+                    Console.SetCursorPosition(current.X, current.Y);
                     Console.Write('■');
-                    Console.SetCursorPosition(width, height);
 
                     // for (var i = 0; i <= height; i++)
                     // {
@@ -97,8 +169,17 @@ namespace Snek
             while (true)
             {
                 var key = Console.ReadKey(true);
-                if (KeyToDirection.ContainsKey(key.Key))
-                    direction = KeyToDirection[key.Key];
+
+                if (!KeyToDirection.ContainsKey(key.Key)) continue;
+
+                current.Direction = KeyToDirection[key.Key];
+
+                waypoints.Add(new Waypoint()
+                {
+                    X = current.X,
+                    Y = current.Y,
+                    Direction = current.Direction
+                });
             }
             // var waypoints = new Listard<Waypoint>();
 
@@ -181,10 +262,19 @@ namespace Snek
             // game.Run();
         }
 
+        private struct Waypoint
+        {
+            public Direction Direction;
+
+            public int X;
+
+            public int Y;
+        }
+
         private enum Direction
         {
-            Right,
             Left,
+            Right,
             Up,
             Down
         }

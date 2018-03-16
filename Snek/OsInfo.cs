@@ -2,7 +2,7 @@ using System;
 
 namespace Snek
 {
-    public class OSInfo
+    public class OsInfo
     {
         /// <summary>
         ///     Determines if the application is running on Windows
