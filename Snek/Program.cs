@@ -28,10 +28,12 @@ namespace Snek
 
             Console.Clear();
 
-            const int width = 32;
-            const int height = 32;
+            int width = Console.BufferWidth - 1;
+            int height = Console.BufferHeight - 1;
+
             var locations = new Listard<Location>();
             var direction = Direction.Right;
+            var length = 8;
 
             locations.Add(new Location
             {
@@ -41,24 +43,16 @@ namespace Snek
 
             var time = Unix();
 
-            for (var i = 0; i < height; i++)
-            {
-                Console.SetCursorPosition(width, i);
-                Console.Write('|');
-            }
-
             new Thread(() =>
             {
                 while (true)
                 {
-                    foreach (Location location in locations)
+                    if (Console.BufferWidth - 1 != width || Console.BufferHeight - 1 != height)
                     {
-                        Console.SetCursorPosition(location.X, location.Y);
-                        Console.Write('x');
+                        Console.Clear();
+                        Console.WriteLine("Abort: Window resized");
+                        return;
                     }
-
-//                    Console.SetCursorPosition(current.X, current.Y);
-//                    Console.Write(' ');
 
                     if (Unix() - time > 500)
                     {
@@ -96,39 +90,23 @@ namespace Snek
                         locations.Add(newLocation);
                     }
 
-                    // TODO: draw difference when direction wasn't changed yet
-                    // TODO: limit length
+                    // TODO: re rendering
                     // TODO: disallow direction change to opposite direction
                     // TODO: add clearing of empty fields
-                    // TODO: draw through borders
                     // TODO: collision events
+
+                    if (locations.Count > length)
+                    {
+                        Console.SetCursorPosition(locations[0].X, locations[0].Y);
+                        Console.Write(' ');
+
+                        locations.RemoveAt(0);
+                    }
 
                     var last = locations.Last();
 
-                    foreach (Location location in locations)
-                    {
-                        if (location.X == last.X && location.Y == last.Y)
-                            continue;
-
-                        Console.SetCursorPosition(location.X, location.Y);
-                        Console.Write('#');
-                    }
-
                     Console.SetCursorPosition(last.X, last.Y);
-                    Console.Write('■');
-
-                    // for (var i = 0; i <= height; i++)
-                    // {
-                    //     for (var j = 0; j <= width; j++)
-                    //     {
-                    //         if (i == y && j == x)
-                    //             Console.Write('■');
-                    //         else
-                    //             Console.Write("  ");
-                    //     }
-
-                    //     Console.Write('\n');
-                    // }
+                    Console.Write('█');
 
                     Thread.Sleep(5);
                 }

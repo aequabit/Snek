@@ -14,7 +14,7 @@ namespace Snek.Entities
         /// <inheritdoc cref="IRenderable.RenderChar"/>
         public char RenderChar(Location location)
         {
-            return '';
+            return 'd';
         }
 
         /// <inheritdoc cref="IRenderable.Locations"/>
