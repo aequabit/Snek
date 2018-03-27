@@ -2,124 +2,24 @@
 using System.Collections.Generic;
 using System.Threading;
 using Listard;
+using Snek.Core;
 using Snek.Entities;
 
 namespace Snek
 {
     internal static class MainClass
     {
-        private static readonly Dictionary<ConsoleKey, Direction> KeyToDirection = new Dictionary<ConsoleKey, Direction>
-        {
-            {ConsoleKey.RightArrow, Direction.Right},
-            {ConsoleKey.LeftArrow, Direction.Left},
-            {ConsoleKey.UpArrow, Direction.Up},
-            {ConsoleKey.DownArrow, Direction.Down}
-        };
-
-        public static double Unix()
-        {
-            return DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
-        }
+        // TODO: re rendering
+        // TODO: increase speed after time
 
         public static void Main(string[] args)
         {
             Console.Title = "( ͡° ͜ʖ ͡°)";
-            Console.CursorVisible = false;
 
-            Console.Clear();
+            var game = new Game(Console.BufferWidth - 1, Console.BufferHeight - 1);
+            game.Start();
 
-            int width = Console.BufferWidth - 1;
-            int height = Console.BufferHeight - 1;
-
-            var locations = new Listard<Location>();
-            var direction = Direction.Right;
-            var length = 8;
-
-            locations.Add(new Location
-            {
-                X = width / 2,
-                Y = height / 2
-            });
-
-            var time = Unix();
-
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    if (Console.BufferWidth - 1 != width || Console.BufferHeight - 1 != height)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Abort: Window resized");
-                        return;
-                    }
-
-                    if (Unix() - time > 500)
-                    {
-                        time = Unix();
-
-                        var newLocation = locations.Last();
-
-                        switch (direction)
-                        {
-                            case Direction.Left:
-                                newLocation.X--;
-                                break;
-                            case Direction.Right:
-                                newLocation.X++;
-                                break;
-                            case Direction.Up:
-                                newLocation.Y--;
-                                break;
-                            case Direction.Down:
-                                newLocation.Y++;
-                                break;
-                        }
-
-                        // TODO: simplify
-                        if (newLocation.X < 0)
-                            newLocation.X = newLocation.X + width;
-                        else if (newLocation.X >= width)
-                            newLocation.X = newLocation.X - width;
-
-                        if (newLocation.Y < 0)
-                            newLocation.Y = newLocation.Y + height;
-                        else if (newLocation.Y >= height)
-                            newLocation.Y = newLocation.Y - height;
-
-                        locations.Add(newLocation);
-                    }
-
-                    // TODO: re rendering
-                    // TODO: disallow direction change to opposite direction
-                    // TODO: add clearing of empty fields
-                    // TODO: collision events
-
-                    if (locations.Count > length)
-                    {
-                        Console.SetCursorPosition(locations[0].X, locations[0].Y);
-                        Console.Write(' ');
-
-                        locations.RemoveAt(0);
-                    }
-
-                    var last = locations.Last();
-
-                    Console.SetCursorPosition(last.X, last.Y);
-                    Console.Write('█');
-
-                    Thread.Sleep(5);
-                }
-            }).Start();
-
-            while (true)
-            {
-                var key = Console.ReadKey(true);
-
-                if (!KeyToDirection.ContainsKey(key.Key)) continue;
-
-                direction = KeyToDirection[key.Key];
-            }
+            while (true) ;
             // var waypoints = new Listard<Waypoint>();
 
             // Waypoint w1;
@@ -199,30 +99,6 @@ namespace Snek
 
             // var game = new Game(800, 600);
             // game.Run();
-        }
-
-        private struct Waypoint
-        {
-            public Direction Direction;
-
-            public int X;
-
-            public int Y;
-        }
-
-        private struct Location
-        {
-            public int X;
-
-            public int Y;
-        }
-
-        private enum Direction
-        {
-            Left,
-            Right,
-            Up,
-            Down
         }
     }
 }
