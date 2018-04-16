@@ -79,7 +79,9 @@ namespace Snek.Core
             _gameWorker = new Worker(_gameLoop);
             _inputWorker = new Worker(_inputLoop);
 
-            var snake = new Snake(new Location {X = _size.Width / 2, Y = _size.Height / 2}, Direction.Right, 5, this);
+            var snake = new Snake(
+                new Location {X = _random.Next(0, _size.Width - 1), Y = _random.Next(0, _size.Height - 1)},
+                Direction.Right, 5, this);
             snake.OnEntityCollision += snake_OnEntityCollision;
 
             _entities.Add(snake);

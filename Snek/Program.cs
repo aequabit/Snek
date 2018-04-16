@@ -9,9 +9,6 @@ namespace Snek
 {
     internal static class MainClass
     {
-        // TODO: re rendering
-        // TODO: increase speed after time
-
         public static void Main(string[] args)
         {
             Console.Title = "( ͡° ͜ʖ ͡°)";
