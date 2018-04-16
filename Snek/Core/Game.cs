@@ -121,12 +121,10 @@ namespace Snek.Core
         /// <param name="message">Exit message.</param>
         public void Stop(string message)
         {
-            // TODO: shutdown workers gracefully
-
             Console.Clear();
             Console.WriteLine(message);
 
-            // TODO: proper shutdown
+            // TODO: Shutdown workers properly
             Console.ReadKey();
             Environment.Exit(1);
         }
@@ -153,7 +151,7 @@ namespace Snek.Core
         private void _gameLoop()
         {
             if (Console.BufferWidth - 1 < _size.Width || Console.BufferHeight - 1 < _size.Height)
-                throw new Exception("Game window too small"); // TODO: custom exception
+                throw new Exception("Game window too small");
 
             if (_foodSpawned == default(DateTime) ||
                 DateTime.Now - _foodSpawned > TimeSpan.FromSeconds(_random.Next(4, 12)))

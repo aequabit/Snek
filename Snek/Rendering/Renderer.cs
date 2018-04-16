@@ -41,15 +41,14 @@ namespace Snek.Rendering
         /// <param name="entity">Entity to render.</param>
         public void Render(IRenderable entity)
         {
-            // TODO: improve
-            // status bar rendering offset
+            // TODO: Make the status bar independent fron the entity rendering queue
             var yOffset = entity is StatusBar ? 0 : 1;
 
             var renderMap = entity.GetRenderMap(_compatibility);
 
             if (_cache.ContainsKey(entity))
             {
-                // TODO: improve
+                // TODO: Improve caching and re-rendering
                 var cachedMap = _cache[entity];
 
                 foreach (var location in renderMap.GetLocations())

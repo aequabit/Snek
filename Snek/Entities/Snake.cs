@@ -73,8 +73,8 @@ namespace Snek.Entities
         /// <inheritdoc cref="IEntity.Update"/>
         public void Update()
         {
-            // TODO: improve
-            // increase the cycle delay by 25% if moving vertically
+            // TODO: Improve vertical/horizontal scaling
+
             var cycleDelay = Controls.IsVertical(Direction)
                 ? _cycleDelay * 1.25
                 : _cycleDelay;
@@ -109,8 +109,7 @@ namespace Snek.Entities
             else if (newLocation.X >= Game.Size.Width)
                 newLocation.X = newLocation.X - Game.Size.Width;
 
-            if (newLocation.Y < 0)
-                newLocation.Y = newLocation.Y + Game.Size.Height;
+            if (newLocation.Y < 0) newLocation.Y = newLocation.Y + Game.Size.Height;
             else if (newLocation.Y >= Game.Size.Height)
                 newLocation.Y = newLocation.Y - Game.Size.Height;
 

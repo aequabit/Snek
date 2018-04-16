@@ -51,7 +51,7 @@ namespace Snek.Rendering
         public char Lookup(Location location)
         {
             if (!_map.ContainsKey(location))
-                throw new Exception("Location is not in the render map"); // TODO: custom exception
+                throw new Exception("Location is not in the render map");
 
             return _map[location];
         }
