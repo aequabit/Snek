@@ -16,10 +16,9 @@ namespace Snek
         {
             Console.Title = "( ͡° ͜ʖ ͡°)";
 
-            var game = new Game(Console.BufferWidth - 1, Console.BufferHeight - 1);
+            var game = new Game(Console.BufferWidth - 1, Console.BufferHeight - 2);
             game.Start();
 
-            while (true) ;
             // var waypoints = new Listard<Waypoint>();
 
             // Waypoint w1;

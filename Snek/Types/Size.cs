@@ -1,4 +1,4 @@
-﻿namespace Snek.Core
+﻿namespace Snek.Types
 {
     public struct Size
     {

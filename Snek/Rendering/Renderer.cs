@@ -1,20 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Listard;
+using Snek.Core;
+using Snek.Entities;
 
 namespace Snek.Rendering
 {
     public class Renderer
     {
+        /// <inheritdoc cref="_compatibility"/>
+        public bool Compatibility
+        {
+            get => _compatibility;
+            set => _compatibility = value;
+        }
+
         /// <summary>
         /// Rendering cache.
         /// </summary>
-        private Dictionary<IRenderable, RenderMap> _cache = new Dictionary<IRenderable, RenderMap>();
+        private readonly Dictionary<IRenderable, RenderMap> _cache = new Dictionary<IRenderable, RenderMap>();
 
+        /// <summary>
+        /// Compatibility rendering mode.
+        /// </summary>
+        private bool _compatibility;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Renderer()
         {
             Console.CursorVisible = false;
-
             Console.Clear();
         }
 
@@ -24,7 +41,11 @@ namespace Snek.Rendering
         /// <param name="entity">Entity to render.</param>
         public void Render(IRenderable entity)
         {
-            var renderMap = entity.GetRenderMap();
+            // TODO: improve
+            // status bar rendering offset
+            var yOffset = entity is StatusBar ? 0 : 1;
+
+            var renderMap = entity.GetRenderMap(_compatibility);
 
             if (_cache.ContainsKey(entity))
             {
@@ -38,15 +59,15 @@ namespace Snek.Rendering
                     if (cachedMap.HasLocation(location) && lookup == cachedMap.Lookup(location))
                         continue;
 
-                    Console.SetCursorPosition(location.X, location.Y);
+                    Console.SetCursorPosition(location.X, location.Y + yOffset);
                     Console.Write(lookup);
                 }
 
                 foreach (var location in cachedMap.GetLocations())
                 {
                     if (renderMap.HasLocation(location)) continue;
-                    
-                    Console.SetCursorPosition(location.X, location.Y);
+
+                    Console.SetCursorPosition(location.X, location.Y + yOffset);
                     Console.Write(' ');
                 }
 
@@ -55,6 +76,14 @@ namespace Snek.Rendering
             else
             {
                 _cache.Add(entity, renderMap);
+
+                foreach (var location in renderMap.GetLocations())
+                {
+                    var lookup = renderMap.Lookup(location);
+
+                    Console.SetCursorPosition(location.X, location.Y + yOffset);
+                    Console.Write(lookup);
+                }
             }
         }
 

@@ -1,12 +1,10 @@
-﻿using Snek.Core;
+﻿using Snek.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Snek.Core
 {
-    public class Controls
+    public static class Controls
     {
         /// <summary>
         /// Key to direction map.
@@ -62,14 +60,12 @@ namespace Snek.Core
         /// <summary>
         /// Checks if a direction is valid.
         /// </summary>
-        /// <param name="currentDirection">Direction to check.</param>
+        /// <param name="currentDirection">Current direction.</param>
+        /// <param name="direction">Direction to check.</param>
         /// <returns>True if the direction is valid, false otherwise.</returns>
         public static bool ValidDirection(Direction currentDirection, Direction direction)
         {
-            if (IsHorizontal(currentDirection))
-                return IsVertical(direction);
-
-            return IsHorizontal(direction);
+            return IsHorizontal(currentDirection) ? IsVertical(direction) : IsHorizontal(direction);
         }
     }
 }

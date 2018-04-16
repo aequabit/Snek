@@ -1,13 +1,13 @@
 ﻿using Listard;
+using Snek.Types;
 using System;
 using System.Collections.Generic;
-using Snek.Core;
 
 namespace Snek.Rendering
 {
     public class RenderMap
     {
-        private Dictionary<Location, char> _map = new Dictionary<Location, char>();
+        private readonly Dictionary<Location, char> _map = new Dictionary<Location, char>();
 
         /// <summary>
         /// Adds a char too the render map.
@@ -26,7 +26,7 @@ namespace Snek.Rendering
         public Listard<Location> GetLocations()
         {
             var list = new Listard<Location>();
-            
+
             foreach (var key in _map.Keys)
                 list.Add(key);
 
@@ -41,7 +41,7 @@ namespace Snek.Rendering
         public bool HasLocation(Location location)
         {
             return _map.ContainsKey(location);
-        }        
+        }
 
         /// <summary>
         /// Looks up the render char for a location.
