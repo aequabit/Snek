@@ -74,17 +74,19 @@ namespace Snek.Entities
         public void Update()
         {
             // TODO: Improve vertical/horizontal scaling
-
+            // Increase the cycle delay by 25% if the snake is moving vertically
             var cycleDelay = Controls.IsVertical(Direction)
                 ? _cycleDelay * 1.25
                 : _cycleDelay;
 
+            // Enforce the delay between update cycles
             if (Helper.UnixTime() - _lastCycle <= cycleDelay) return;
-
             _lastCycle = Helper.UnixTime();
 
+            // Copy the last location to modify it for the next tick
             var newLocation = _locations.Last();
-
+            
+            // Detemine the new position of the snake
             switch (Direction)
             {
                 case Direction.Left:
@@ -104,28 +106,32 @@ namespace Snek.Entities
             }
 
             // TODO: simplify
+            
+            // Reposition the snake if it left the board horizontally
             if (newLocation.X < 0)
                 newLocation.X = newLocation.X + Game.Size.Width;
             else if (newLocation.X >= Game.Size.Width)
                 newLocation.X = newLocation.X - Game.Size.Width;
 
+            // Reposition the snake if it left the board verticall
             if (newLocation.Y < 0) newLocation.Y = newLocation.Y + Game.Size.Height;
             else if (newLocation.Y >= Game.Size.Height)
                 newLocation.Y = newLocation.Y - Game.Size.Height;
 
+            // Trim the snake to it's length
             if (_locations.Count > Length)
                 _locations.RemoveAt(0);
 
+            // Snake collided with itself
             if (_locations.Any(l => l.X == newLocation.X && l.Y == newLocation.Y) && OnEntityCollision != null)
                 OnEntityCollision(this, this);
-            else
-                _locations.Add(newLocation);
 
-            // TODO: improve
-            var entity = Game.Entities.Where(e =>
-                e.Locations().First().X == newLocation.X && e.Locations().First().Y == newLocation.Y && !(e is Snake));
+            _locations.Add(newLocation);
 
-            if (entity.Any()) OnEntityCollision(this, entity.First());
+            // Snake collided with another entity
+            var entity = Game.EntityAt(newLocation);
+            if (entity != null && !(entity is Snake))
+                OnEntityCollision(this, entity);
         }
 
         /// <summary>
@@ -139,7 +145,7 @@ namespace Snek.Entities
 
             var direction = Controls.KeyToDirection[key.Key];
 
-            if (!Controls.ValidDirection(Direction, direction))
+            if (!Controls.ValidMove(Direction, direction))
                 return;
 
             Direction = direction;
@@ -153,6 +159,7 @@ namespace Snek.Entities
             foreach (var location in _locations)
                 map.Add(location, compatibility ? '#' : '█');
 
+// Concept of different heads depending on the moving direction
 //            var last = _locations.Last();
 //            foreach (var location in _locations)
 //            {

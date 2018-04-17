@@ -13,11 +13,11 @@ namespace Snek.Entities
 
         /// <inheritdoc cref="IEntity.Locations"/>
         private readonly Listard<Location> _locations = new Listard<Location>();
-        
+
         /// <summary>
         /// Game to display info for.
         /// </summary>
-        private readonly Game _game; 
+        private readonly Game _game;
 
         /// <summary>
         /// Status bar title.
@@ -43,13 +43,18 @@ namespace Snek.Entities
         {
             _locations.Clear();
 
+            // Get the snake's head
             var snakeLocation = _game.Snake.Locations().Last();
 
-            _statusBar = $"X: {snakeLocation.X} | Y: {snakeLocation.Y} | Length: {_game.Snake.Length} | Cycle: {_game.Snake.CycleDelay}";
+            // Status bar template
+            _statusBar =
+                $"X: {snakeLocation.X} | Y: {snakeLocation.Y} | Length: {_game.Snake.Length} | Cycle: {_game.Snake.CycleDelay}";
 
+            // Calculate the location of the title
             for (var i = 0; i < _statusTitle.Length; i++)
                 _locations.Add(new Location {X = i, Y = 0});
 
+            // Calculate the location of the status bar
             for (var i = Console.BufferWidth - _statusBar.Length; i < Console.BufferWidth; i++)
                 _locations.Add(new Location {X = i, Y = 0});
         }
@@ -61,6 +66,7 @@ namespace Snek.Entities
 
             foreach (var location in _locations)
             {
+                // Add the title and status bar rendering location
                 if (location.X < _statusTitle.Length)
                     map.Add(location, _statusTitle[location.X]);
                 else if (location.X < Console.BufferWidth)

@@ -5,7 +5,7 @@ namespace Snek.Rendering
     public interface IRenderable
     {
         /// <summary>
-        /// Gets a list the entity's render map.
+        /// Gets the entity's render map.
         /// </summary>
         /// <param name="compatibility">Compatibility mode for rendering.</param>
         /// <returns>Render map.</returns>

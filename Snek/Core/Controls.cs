@@ -58,12 +58,12 @@ namespace Snek.Core
         }
 
         /// <summary>
-        /// Checks if a direction is valid.
+        /// Checks if a move is valid.
         /// </summary>
         /// <param name="currentDirection">Current direction.</param>
         /// <param name="direction">Direction to check.</param>
-        /// <returns>True if the direction is valid, false otherwise.</returns>
-        public static bool ValidDirection(Direction currentDirection, Direction direction)
+        /// <returns>True if the move is valid, false otherwise.</returns>
+        public static bool ValidMove(Direction currentDirection, Direction direction)
         {
             return IsHorizontal(currentDirection) ? IsVertical(direction) : IsHorizontal(direction);
         }

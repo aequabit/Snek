@@ -46,6 +46,7 @@ namespace Snek.Rendering
 
             var renderMap = entity.GetRenderMap(_compatibility);
 
+            // If the entity already existed in the previous cycle and needs re-rendering
             if (_cache.ContainsKey(entity))
             {
                 // TODO: Improve caching and re-rendering
@@ -55,31 +56,37 @@ namespace Snek.Rendering
                 {
                     var lookup = renderMap.Lookup(location);
 
+                    // Don't re-render the location if it doesn't differ from the cache
                     if (cachedMap.HasLocation(location) && lookup == cachedMap.Lookup(location))
                         continue;
 
+                    // Render the location
                     Console.SetCursorPosition(location.X, location.Y + yOffset);
                     Console.Write(lookup);
                 }
 
-                foreach (var location in cachedMap.GetLocations())
+                foreach (var cachedLocation in cachedMap.GetLocations())
                 {
-                    if (renderMap.HasLocation(location)) continue;
+                    if (renderMap.HasLocation(cachedLocation)) continue;
 
-                    Console.SetCursorPosition(location.X, location.Y + yOffset);
+                    // Clear the location if the cached location doesn't exist current map
+                    Console.SetCursorPosition(cachedLocation.X, cachedLocation.Y + yOffset);
                     Console.Write(' ');
                 }
 
+                // Update the rendering cache
                 _cache[entity] = renderMap;
             }
-            else
+            else // The entity wasn't rendered before and will be rendered the first time
             {
+                // Store the entity's render map in the cache
                 _cache.Add(entity, renderMap);
 
                 foreach (var location in renderMap.GetLocations())
                 {
                     var lookup = renderMap.Lookup(location);
 
+                    // Render the location
                     Console.SetCursorPosition(location.X, location.Y + yOffset);
                     Console.Write(lookup);
                 }
