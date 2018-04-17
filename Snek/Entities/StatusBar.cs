@@ -52,11 +52,11 @@ namespace Snek.Entities
 
             // Calculate the location of the title
             for (var i = 0; i < _statusTitle.Length; i++)
-                _locations.Add(new Location {X = i, Y = 0});
+                _locations.Add(new Location(i, 0));
 
             // Calculate the location of the status bar
             for (var i = Console.BufferWidth - _statusBar.Length; i < Console.BufferWidth; i++)
-                _locations.Add(new Location {X = i, Y = 0});
+                _locations.Add(new Location(i, 0));
         }
 
         /// <inheritdoc cref="IRenderable.GetRenderMap"/>

@@ -41,7 +41,7 @@ namespace Snek.Rendering
         /// <param name="entity">Entity to render.</param>
         public void Render(IRenderable entity)
         {
-            // TODO: Make the status bar independent fron the entity rendering queue
+            // TODO: Make the status bar independent from the entity rendering queue
             var yOffset = entity is StatusBar ? 0 : 1;
 
             var renderMap = entity.GetRenderMap(_compatibility);

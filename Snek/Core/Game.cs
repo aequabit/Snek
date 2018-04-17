@@ -79,7 +79,10 @@ namespace Snek.Core
             _gameWorker = new Worker(GameLoop);
             _inputWorker = new Worker(InputLoop);
 
-            var location = new Location {X = _random.Next(0, _size.Width - 1), Y = _random.Next(0, _size.Height - 1)};
+            var location = new Location(
+                _random.Next(0, _size.Width - 1),
+                _random.Next(0, _size.Height - 1)
+            );
             var snake = new Snake(location, Direction.Right, 5, this);
             snake.OnEntityCollision += (entity, collided) =>
             {
@@ -154,11 +157,10 @@ namespace Snek.Core
             if (Snake == null || _paused) return;
 
             // Get a random location to spawn the food at
-            var location = new Location
-            {
-                X = _random.Next(0, _size.Width - 1),
-                Y = _random.Next(0, _size.Height - 1)
-            };
+            var location = new Location(
+                _random.Next(0, _size.Width - 1),
+                _random.Next(0, _size.Height - 1)
+            );
 
             // Spawn the food if there is no other entity at the location
             if (EntityAt(location) == null)
@@ -219,7 +221,7 @@ namespace Snek.Core
         private void InputLoop()
         {
             // TODO: Proper key bindings
-            
+
             var key = Console.ReadKey(true);
 
             // Register the pause toggle
@@ -251,7 +253,7 @@ namespace Snek.Core
                     _renderer.Compatibility = !_renderer.Compatibility;
                     return;
             }
-            
+
             // Redirect all other input to the snake's input handler
             Snake?.SendInput(key);
         }
