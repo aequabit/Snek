@@ -12,9 +12,7 @@ namespace Snek
         public static void Main(string[] args)
         {
             Console.Title = "( ͡° ͜ʖ ͡°)";
-
-            var game = new Game(Console.BufferWidth - 1, Console.BufferHeight - 2);
-            game.Start();
+            new Game().Start();
         }
     }
 }

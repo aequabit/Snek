@@ -7,19 +7,19 @@ namespace Snek.Entities
 {
     public class Food : IEntity, IRenderable
     {
-        /// <inheritdoc cref="_locations"/>
-        public Listard<Location> Locations() => _locations;
+        /// <inheritdoc cref="_positions"/>
+        public Listard<Position> Positions() => _positions;
         
-        /// <inheritdoc cref="IEntity.Locations"/>
-        private readonly Listard<Location> _locations = new Listard<Location>();
+        /// <inheritdoc cref="IEntity.Positions"/>
+        private readonly Listard<Position> _positions = new Listard<Position>();
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="location">Location of the food.</param>
-        public Food(Location location)
+        /// <param name="position">Location of the food.</param>
+        public Food(Position position)
         {
-            _locations.Add(location);
+            _positions.Add(position);
         }
 
         /// <inheritdoc cref="IEntity.Update"/>
@@ -27,12 +27,12 @@ namespace Snek.Entities
         {
         }
 
-        /// <inheritdoc cref="IRenderable.GetRenderMap"/>
-        public RenderMap GetRenderMap(bool compatibility = false)
+        /// <inheritdoc cref="IRenderable.RenderMap"/>
+        public RenderMap RenderMap(bool compatibility = false)
         {
             var map = new RenderMap();
 
-            map.Add(_locations.First(), compatibility ? 'x' : '●');
+            map.Add(_positions[0], compatibility ? 'x' : '●');
 
             return map;
         }

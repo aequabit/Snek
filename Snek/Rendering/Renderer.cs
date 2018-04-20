@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Listard;
-using Snek.Core;
+﻿using Listard;
 using Snek.Entities;
+using Snek.UI;
+using System;
+using System.Collections.Generic;
+using Snek.Types;
 
 namespace Snek.Rendering
 {
@@ -36,61 +36,65 @@ namespace Snek.Rendering
         }
 
         /// <summary>
-        /// Renders an entity.
+        /// Renders a renderable object.
         /// </summary>
-        /// <param name="entity">Entity to render.</param>
-        public void Render(IRenderable entity)
+        /// <param name="renderable">Object to render.</param>
+        public void Render(IRenderable renderable)
         {
-            // TODO: Make the status bar independent from the entity rendering queue
-            var yOffset = entity is StatusBar ? 0 : 1;
+            var renderMap = renderable.RenderMap(_compatibility);
 
-            var renderMap = entity.GetRenderMap(_compatibility);
-
-            // If the entity already existed in the previous cycle and needs re-rendering
-            if (_cache.ContainsKey(entity))
+            // If the object already existed in the previous cycle and needs re-rendering
+            if (_cache.ContainsKey(renderable))
             {
                 // TODO: Improve caching and re-rendering
-                var cachedMap = _cache[entity];
+                var cachedMap = _cache[renderable];
 
-                foreach (var location in renderMap.GetLocations())
+                foreach (var position in renderMap.GetPositions())
                 {
-                    var lookup = renderMap.Lookup(location);
+                    var lookup = renderMap.Lookup(position);
 
-                    // Don't re-render the location if it doesn't differ from the cache
-                    if (cachedMap.HasLocation(location) && lookup == cachedMap.Lookup(location))
+                    // Don't re-render the position if it doesn't differ from the cache
+                    if (cachedMap.HasPosition(position) && lookup == cachedMap.Lookup(position))
                         continue;
 
-                    // Render the location
-                    Console.SetCursorPosition(location.X, location.Y + yOffset);
-                    Console.Write(lookup);
+                    Draw(renderable, position, lookup);
                 }
 
-                foreach (var cachedLocation in cachedMap.GetLocations())
+                // Clear the cached positions that don't exist anymore
+                foreach (var cachedPosition in cachedMap.GetPositions())
                 {
-                    if (renderMap.HasLocation(cachedLocation)) continue;
+                    if (renderMap.HasPosition(cachedPosition)) continue;
 
-                    // Clear the location if the cached location doesn't exist current map
-                    Console.SetCursorPosition(cachedLocation.X, cachedLocation.Y + yOffset);
-                    Console.Write(' ');
+                    Draw(renderable, cachedPosition, ' ');
                 }
 
                 // Update the rendering cache
-                _cache[entity] = renderMap;
+                _cache[renderable] = renderMap;
             }
-            else // The entity wasn't rendered before and will be rendered the first time
+            else // The object wasn't rendered before and will be rendered the first time
             {
-                // Store the entity's render map in the cache
-                _cache.Add(entity, renderMap);
+                // Store the object's render map in the cache
+                _cache.Add(renderable, renderMap);
 
-                foreach (var location in renderMap.GetLocations())
-                {
-                    var lookup = renderMap.Lookup(location);
-
-                    // Render the location
-                    Console.SetCursorPosition(location.X, location.Y + yOffset);
-                    Console.Write(lookup);
-                }
+                // Render all positions on the render map
+                foreach (var position in renderMap.GetPositions())
+                    Draw(renderable, position, renderMap.Lookup(position));
             }
+        }
+
+        /// <summary>
+        /// Draws on a position.
+        /// </summary>
+        /// <param name="position">Position to draw on.</param>
+        /// <param name="renderChar">Character to draw.</param>
+        private void Draw(IRenderable renderable/*remove*/, Position position, char renderChar)
+        {
+            if (position.X < 0 || position.X > Console.BufferWidth || position.Y < 0 ||
+                position.Y > Console.BufferHeight)
+                return;
+
+            Console.SetCursorPosition(position.X, position.Y);
+            Console.Write(renderChar);
         }
 
         /// <summary>

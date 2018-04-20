@@ -2,8 +2,10 @@
 using Snek.Entities;
 using Snek.Rendering;
 using Snek.Types;
+using Snek.UI;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Snek.Core
 {
@@ -41,6 +43,11 @@ namespace Snek.Core
         private readonly Listard<IEntity> _entities = new Listard<IEntity>();
 
         /// <summary>
+        /// UI components.
+        /// </summary>
+        private readonly Listard<IComponent> _uiComponents = new Listard<IComponent>();
+
+        /// <summary>
         /// Game logic worker.
         /// </summary>
         private readonly Worker _gameWorker;
@@ -63,7 +70,7 @@ namespace Snek.Core
         /// <summary>
         /// Time the last food was spawned at.
         /// </summary>
-        private DateTime _foodSpawned;
+        private DateTime _foodSpawned = DateTime.Now;
 
         /// <summary>
         /// Random generator.
@@ -73,17 +80,21 @@ namespace Snek.Core
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Game(int width, int height)
+        public Game()
         {
-            _size = new Size(width, height);
+            if (Helper.IsWindows())
+                Console.BufferHeight = Console.WindowHeight;
+
+            _size = new Size(Console.BufferWidth - 2, Console.BufferHeight - 2);
+
             _gameWorker = new Worker(GameLoop);
             _inputWorker = new Worker(InputLoop);
 
-            var location = new Location(
+            var position = new Position(
                 _random.Next(0, _size.Width - 1),
                 _random.Next(0, _size.Height - 1)
             );
-            var snake = new Snake(location, Direction.Right, 5, this);
+            var snake = new Snake(position, Direction.Right, 5, this);
             snake.OnEntityCollision += (entity, collided) =>
             {
                 switch (collided)
@@ -94,7 +105,6 @@ namespace Snek.Core
                     case Food _:
                     {
                         Snake.Length++;
-
                         _entities.Remove(collided);
 
                         if (Snake.CycleDelay >= 60)
@@ -105,7 +115,9 @@ namespace Snek.Core
             };
 
             _entities.Add(snake);
-            _entities.Add(new StatusBar(this));
+
+            _uiComponents.Add(new TitleBar());
+            _uiComponents.Add(new StatusBar(this));
         }
 
         /// <summary>
@@ -157,32 +169,30 @@ namespace Snek.Core
             if (Snake == null || _paused) return;
 
             // Get a random location to spawn the food at
-            var location = new Location(
+            var position = new Position(
                 _random.Next(0, _size.Width - 1),
                 _random.Next(0, _size.Height - 1)
             );
 
+            // TODO: Automatically limit bounds of UI
+            if (position.Y < 1 || position.Y > _size.Height)
+                return;
+            
             // Spawn the food if there is no other entity at the location
-            if (EntityAt(location) == null)
-                _entities.Add(new Food(location));
+            if (EntityAt(position) == null && !Snake.AtPosition(position))
+                _entities.Add(new Food(position));
         }
 
         /// <summary>
-        /// Searches for an entity at a given location.
+        /// Searches for an entity at a given position.
         /// </summary>
-        /// <param name="location">Location to search at.</param>
-        /// <returns>The entity or null if no entity was found at the location.</returns>
-        public IEntity EntityAt(Location location)
+        /// <param name="position">Position to search at.</param>
+        /// <returns>The entity or null if no entity was found at the position.</returns>
+        public IEntity EntityAt(Position position)
         {
             foreach (var entity in _entities)
-            {
-                foreach (var entityLocation in entity.Locations())
-                {
-                    if (entityLocation != location) continue;
-
+                if (entity.Positions().First() == position)
                     return entity;
-                }
-            }
 
             return null;
         }
@@ -197,8 +207,8 @@ namespace Snek.Core
                 throw new Exception("Game window too small");
 
             // Spawn food with a random delay
-            if (_foodSpawned == default(DateTime) ||
-                DateTime.Now - _foodSpawned > TimeSpan.FromSeconds(_random.Next(2, 8)))
+            if (_entities.Count(e => e is Food) < 8 &&
+                DateTime.Now - _foodSpawned > TimeSpan.FromSeconds(_random.Next(4, 12)))
             {
                 SpawnFood();
                 _foodSpawned = DateTime.Now;
@@ -212,6 +222,15 @@ namespace Snek.Core
                 // Render the entity if it implements IRenderable
                 if (entity is IRenderable renderable)
                     _renderer.Render(renderable);
+            }
+
+            foreach (var component in _uiComponents)
+            {
+                // Update the component
+                component.Update();
+
+                // Render the component
+                _renderer.Render(component);
             }
         }
 

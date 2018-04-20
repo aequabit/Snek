@@ -13,7 +13,15 @@ namespace Snek.Entities
         public Direction Direction { get; private set; }
 
         /// <inheritdoc cref="Length"/>
-        public int Length { get; set; }
+        public int Length
+        {
+            get => _length;
+            set
+            {
+                if (_positions.Count() > 1)
+                    _length = value;
+            }
+        }
 
         /// <inheritdoc cref="Game"/>
         public Game Game { get; }
@@ -25,8 +33,8 @@ namespace Snek.Entities
             set => _cycleDelay = value;
         }
 
-        /// <inheritdoc cref="IEntity.Locations"/>
-        public Listard<Location> Locations() => _locations;
+        /// <inheritdoc cref="IEntity.Positions"/>
+        public Listard<Position> Positions() => _positions;
 
         /// <summary>
         /// Entity collision event handler delegate.
@@ -41,9 +49,9 @@ namespace Snek.Entities
         public event EntityCollisionHandler OnEntityCollision;
 
         /// <summary>
-        /// The snake's locations.
+        /// The snake's positions.
         /// </summary>
-        private readonly Listard<Location> _locations = new Listard<Location>();
+        private readonly Listard<Position> _positions = new Listard<Position>();
 
         /// <summary>
         /// Timestamp of the last cycle.
@@ -56,15 +64,20 @@ namespace Snek.Entities
         private int _cycleDelay = 250;
 
         /// <summary>
+        /// Length of the snake.
+        /// </summary>
+        private int _length = 1;
+        
+        /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="location">Initial location of the snake.</param>
+        /// <param name="position">Initial position of the snake.</param>
         /// <param name="direction">Initial direction of the snake.</param>
         /// <param name="length">Initial length of the snake.</param>
         /// <param name="game">Game the snake is in.</param>
-        public Snake(Location location, Direction direction, int length, Game game)
+        public Snake(Position position, Direction direction, int length, Game game)
         {
-            _locations.Add(location);
+            _positions.Add(position);
             Direction = direction;
             Length = length;
             Game = game;
@@ -83,55 +96,69 @@ namespace Snek.Entities
             if (Helper.UnixTime() - _lastCycle <= cycleDelay) return;
             _lastCycle = Helper.UnixTime();
 
-            // Copy the last location to modify it for the next tick
-            var newLocation = _locations.Last();
-            
+            // Copy the last position to modify it for the next tick
+            var newPosition = _positions.Last();
+
             // Detemine the new position of the snake
             switch (Direction)
             {
                 case Direction.Left:
-                    newLocation.X--;
+                    newPosition.X--;
                     break;
                 case Direction.Right:
-                    newLocation.X++;
+                    newPosition.X++;
                     break;
                 case Direction.Up:
-                    newLocation.Y--;
+                    newPosition.Y--;
                     break;
                 case Direction.Down:
-                    newLocation.Y++;
+                    newPosition.Y++;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
             // TODO: simplify
-            
-            // Reposition the snake if it left the board horizontally
-            if (newLocation.X < 0)
-                newLocation.X = newLocation.X + Game.Size.Width;
-            else if (newLocation.X >= Game.Size.Width)
-                newLocation.X = newLocation.X - Game.Size.Width;
 
+            // Reposition the snake if it left the board horizontally
+            if (newPosition.X < 0)
+                newPosition.X = newPosition.X + Game.Size.Width + 1;
+            else if (newPosition.X > Game.Size.Width)
+                newPosition.X = newPosition.X - Game.Size.Width - 1;
+
+            // TODO: Automatically limit bounds of UI
             // Reposition the snake if it left the board verticall
-            if (newLocation.Y < 0) newLocation.Y = newLocation.Y + Game.Size.Height;
-            else if (newLocation.Y >= Game.Size.Height)
-                newLocation.Y = newLocation.Y - Game.Size.Height;
+            //if (newPosition.Y < 0) newPosition.Y = newPosition.Y + Game.Size.Height + 1;
+            if (newPosition.Y < 1) newPosition.Y = newPosition.Y + Game.Size.Height;
+            else if (newPosition.Y > Game.Size.Height)
+                //    newPosition.Y = newPosition.Y - Game.Size.Height - 1;
+                newPosition.Y = newPosition.Y - Game.Size.Height;
 
             // Trim the snake to it's length
-            if (_locations.Count > Length)
-                _locations.RemoveAt(0);
+            if (_positions.Count() > _length)
+                for (var i = _positions.Count() - Length - 1; i >= 0; i--)
+                    _positions.RemoveAt(i);
 
             // Snake collided with itself
-            if (_locations.Any(l => l.X == newLocation.X && l.Y == newLocation.Y) && OnEntityCollision != null)
-                OnEntityCollision(this, this);
+            if (_positions.Any(l => l.X == newPosition.X && l.Y == newPosition.Y))
+                OnEntityCollision?.Invoke(this, this);
 
-            _locations.Add(newLocation);
+            _positions.Add(newPosition);
 
             // Snake collided with another entity
-            var entity = Game.EntityAt(newLocation);
+            var entity = Game.EntityAt(newPosition);
             if (entity != null && !(entity is Snake))
                 OnEntityCollision(this, entity);
+        }
+
+        /// <summary>
+        /// Checks if the snake is at a position.
+        /// </summary>
+        /// <param name="position">Position to check.</param>
+        /// <returns>True if the snake is at the position.</returns>
+        public bool AtPosition(Position position)
+        {
+            return _positions.Any(e => e == position);
         }
 
         /// <summary>
@@ -151,13 +178,13 @@ namespace Snek.Entities
             Direction = direction;
         }
 
-        /// <inheritdoc cref="IRenderable.GetRenderMap"/>
-        public RenderMap GetRenderMap(bool compatibility = false)
+        /// <inheritdoc cref="IRenderable.RenderMap"/>
+        public RenderMap RenderMap(bool compatibility = false)
         {
             var map = new RenderMap();
 
-            foreach (var location in _locations)
-                map.Add(location, compatibility ? '#' : '█');
+            foreach (var position in _positions)
+                map.Add(position, compatibility ? '#' : '█');
 
 // Concept of different heads depending on the moving direction
 //            var last = _locations.Last();

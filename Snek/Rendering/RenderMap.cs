@@ -7,25 +7,25 @@ namespace Snek.Rendering
 {
     public class RenderMap
     {
-        private readonly Dictionary<Location, char> _map = new Dictionary<Location, char>();
+        private readonly Dictionary<Position, char> _map = new Dictionary<Position, char>();
 
         /// <summary>
         /// Adds a char too the render map.
         /// </summary>
-        /// <param name="location">The location of the render char.</param>
+        /// <param name="position">The location of the render char.</param>
         /// <param name="renderChar">The char to render.</param>
-        public void Add(Location location, char renderChar)
+        public void Add(Position position, char renderChar)
         {
-            _map.Add(location, renderChar);
+            _map.Add(position, renderChar);
         }
 
         /// <summary>
-        /// Gets a list of locations in the render map.
+        /// Gets a list of positions in the render map.
         /// </summary>
-        /// <returns>List of locations in the render map.</returns>
-        public Listard<Location> GetLocations()
+        /// <returns>List of positions in the render map.</returns>
+        public Listard<Position> GetPositions()
         {
-            var list = new Listard<Location>();
+            var list = new Listard<Position>();
 
             foreach (var key in _map.Keys)
                 list.Add(key);
@@ -34,26 +34,26 @@ namespace Snek.Rendering
         }
 
         /// <summary>
-        /// Checks if the render map contains a location.
+        /// Checks if the render map contains a position.
         /// </summary>
-        /// <param name="location">Location to check.</param>
-        /// <returns>True if the render map contains the location, false otherwise.</returns>
-        public bool HasLocation(Location location)
+        /// <param name="position">Position to check.</param>
+        /// <returns>True if the render map contains the position, false otherwise.</returns>
+        public bool HasPosition(Position position)
         {
-            return _map.ContainsKey(location);
+            return _map.ContainsKey(position);
         }
 
         /// <summary>
-        /// Looks up the render char for a location.
+        /// Looks up the render char for a position.
         /// </summary>
-        /// <param name="location">Location to get the render char for.</param>
+        /// <param name="position">Position to get the render char for.</param>
         /// <returns>The render char.</returns>
-        public char Lookup(Location location)
+        public char Lookup(Position position)
         {
-            if (!_map.ContainsKey(location))
-                throw new Exception("Location is not in the render map");
+            if (!_map.ContainsKey(position))
+                throw new Exception("Position is not in the render map");
 
-            return _map[location];
+            return _map[position];
         }
     }
 }

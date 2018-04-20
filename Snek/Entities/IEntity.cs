@@ -9,7 +9,7 @@ namespace Snek.Entities
         /// Locations of the entity.
         /// </summary>
         /// <returns>The locations of the entity.</returns>
-        Listard<Location> Locations();
+        Listard<Position> Positions();
         
         /// <summary>
         /// Update method called on every game tick.

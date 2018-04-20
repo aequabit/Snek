@@ -9,6 +9,6 @@ namespace Snek.Rendering
         /// </summary>
         /// <param name="compatibility">Compatibility mode for rendering.</param>
         /// <returns>Render map.</returns>
-        RenderMap GetRenderMap(bool compatibility = false);
+        RenderMap RenderMap(bool compatibility = false);
     }
 }
