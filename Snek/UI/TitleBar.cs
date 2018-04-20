@@ -1,18 +1,10 @@
-﻿using Listard;
-using Snek.Core;
-using Snek.Rendering;
+﻿using Snek.Rendering;
 using Snek.Types;
-using System;
 
 namespace Snek.UI
 {
     public class TitleBar : IComponent
     {
-        /// <summary>
-        /// Game to display info for.
-        /// </summary>
-        private Game _game;
-
         /// <summary>
         /// Title bar text.
         /// </summary>

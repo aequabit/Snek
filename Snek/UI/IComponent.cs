@@ -1,5 +1,4 @@
-﻿using Snek.Core;
-using Snek.Rendering;
+﻿using Snek.Rendering;
 using Snek.Types;
 
 namespace Snek.UI

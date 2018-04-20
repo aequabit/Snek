@@ -1,7 +1,4 @@
-﻿using Listard;
-using Snek.Entities;
-using Snek.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Snek.Types;
 
@@ -57,7 +54,7 @@ namespace Snek.Rendering
                     if (cachedMap.HasPosition(position) && lookup == cachedMap.Lookup(position))
                         continue;
 
-                    Draw(renderable, position, lookup);
+                    Draw(position, lookup);
                 }
 
                 // Clear the cached positions that don't exist anymore
@@ -65,7 +62,7 @@ namespace Snek.Rendering
                 {
                     if (renderMap.HasPosition(cachedPosition)) continue;
 
-                    Draw(renderable, cachedPosition, ' ');
+                    Draw(cachedPosition, ' ');
                 }
 
                 // Update the rendering cache
@@ -78,7 +75,7 @@ namespace Snek.Rendering
 
                 // Render all positions on the render map
                 foreach (var position in renderMap.GetPositions())
-                    Draw(renderable, position, renderMap.Lookup(position));
+                    Draw(position, renderMap.Lookup(position));
             }
         }
 
@@ -87,7 +84,7 @@ namespace Snek.Rendering
         /// </summary>
         /// <param name="position">Position to draw on.</param>
         /// <param name="renderChar">Character to draw.</param>
-        private void Draw(IRenderable renderable/*remove*/, Position position, char renderChar)
+        private void Draw(Position position, char renderChar)
         {
             if (position.X < 0 || position.X > Console.BufferWidth || position.Y < 0 ||
                 position.Y > Console.BufferHeight)

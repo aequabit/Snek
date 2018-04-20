@@ -1,6 +1,4 @@
-﻿using Snek.Core;
-
-namespace Snek.Rendering
+﻿namespace Snek.Rendering
 {
     public interface IRenderable
     {

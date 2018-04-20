@@ -1,6 +1,5 @@
 ﻿using Listard;
 using System;
-using System.Linq;
 using Snek.Core;
 using Snek.Rendering;
 using Snek.Types;
@@ -148,7 +147,9 @@ namespace Snek.Entities
             // Snake collided with another entity
             var entity = Game.EntityAt(newPosition);
             if (entity != null && !(entity is Snake))
-                OnEntityCollision(this, entity);
+            {
+                OnEntityCollision?.Invoke(this, entity);
+            }
         }
 
         /// <summary>

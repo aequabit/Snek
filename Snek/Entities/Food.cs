@@ -1,7 +1,6 @@
 ﻿using Listard;
 using Snek.Rendering;
 using Snek.Types;
-using System.Linq;
 
 namespace Snek.Entities
 {

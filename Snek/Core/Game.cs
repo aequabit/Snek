@@ -5,7 +5,6 @@ using Snek.Types;
 using Snek.UI;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Snek.Core
 {
@@ -240,7 +239,6 @@ namespace Snek.Core
         private void InputLoop()
         {
             // TODO: Proper key bindings
-
             var key = Console.ReadKey(true);
 
             // Register the pause toggle
@@ -263,6 +261,8 @@ namespace Snek.Core
                     Snake.CycleDelay += 10;
                     return;
                 case ConsoleKey.D3:
+                    if (Snake.Length <= 1)
+                        return;
                     Snake.Length -= 1;
                     return;
                 case ConsoleKey.D4:

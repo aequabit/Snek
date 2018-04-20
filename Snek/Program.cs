@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using Listard;
 using Snek.Core;
-using Snek.Entities;
 
 namespace Snek
 {

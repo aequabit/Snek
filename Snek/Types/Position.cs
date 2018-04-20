@@ -12,12 +12,12 @@
             Y = y;
         }
 
-        public static bool operator ==(Position l, Position r)
+        public static bool operator == (Position l, Position r)
         {
             return l.X == r.X && l.Y == r.Y;
         }
 
-        public static bool operator !=(Position l, Position r)
+        public static bool operator != (Position l, Position r)
         {
             return !(l == r);
         }
