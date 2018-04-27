@@ -51,8 +51,8 @@ namespace Snek.UI
             var map = new RenderMap();
 
             // Calculate the location of the status bar
-            for (var i = Console.BufferWidth - _text.Length; i < Console.BufferWidth; i++)
-                map.Add(new Position(i, Console.BufferHeight - 1), _text[i - Console.BufferWidth + _text.Length]);
+            for (var i = Console.BufferWidth - _text.Length - 1; i < Console.BufferWidth - 1; i++)
+                map.Add(new Position(i, Console.BufferHeight - 1), _text[i - Console.BufferWidth + _text.Length + 1]);
 
             return map;
         }

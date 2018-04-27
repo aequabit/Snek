@@ -14,9 +14,9 @@ namespace Snek.Core
         }
 
         /// <summary>
-        /// Determines if the application is running on Windows
+        /// Determines if the application is running on Windows.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if the application is running on Windows.</returns>
         public static bool IsWindows()
         {
             var pid = Environment.OSVersion.Platform;

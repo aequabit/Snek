@@ -83,7 +83,10 @@ namespace Snek.Core
         public Game()
         {
             if (Helper.IsWindows())
+            {
+                _renderer.Compatibility = true;
                 Console.BufferHeight = Console.WindowHeight;
+            }
 
             _size = new Size(Console.BufferWidth - 2, Console.BufferHeight - 2);
 
