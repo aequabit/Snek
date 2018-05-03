@@ -20,11 +20,7 @@ namespace Snek.UI
         public void Update()
         {
             // Status bar template
-#if DEBUG
             _text = "Snek Development Build";
-#else
-            _text = "Snek Build v1.0";
-#endif
         }
 
         /// <inheritdoc cref="IRenderable.RenderMap"/>
