@@ -11,9 +11,9 @@
 # To do:
 * [ ] ? Make the snake independent from the entity list
 * [ ] Different kind of food that decreases the snake's length
-* [ ] Fully drawing the snake at start instead of building it up slowly
-* [ ] Fixing Snake/Snake collisions occurring randomly
+* [x] Fully drawing the snake at start instead of building it up slowly
+* [ ] Fixing the snake colliding with itself when changing directions quickly (allow only one direction change per tick)
 * [ ] Shutdown of async workers and threads
 * [ ] Resizing and re-rendering on runtime
-* [ ] Proper UI rendering (status bar is currently an entity)
-* [ ] Clean up some messy parts of the code
+* [x] Proper UI rendering (status bar is currently an entity)
+* [x] Clean up some messy parts of the code
