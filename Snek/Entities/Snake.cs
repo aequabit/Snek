@@ -127,10 +127,9 @@ namespace Snek.Entities
 
             // TODO: Automatically limit bounds of UI
             // Reposition the snake if it left the board verticall
-            //if (newPosition.Y < 0) newPosition.Y = newPosition.Y + Game.Size.Height + 1;
-            if (newPosition.Y < 1) newPosition.Y = newPosition.Y + Game.Size.Height;
+            if (newPosition.Y < 1)
+                newPosition.Y = newPosition.Y + Game.Size.Height;
             else if (newPosition.Y > Game.Size.Height)
-                //    newPosition.Y = newPosition.Y - Game.Size.Height - 1;
                 newPosition.Y = newPosition.Y - Game.Size.Height;
 
             // Trim the snake to it's length
