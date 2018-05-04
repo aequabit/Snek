@@ -1,4 +1,4 @@
-﻿using Snek.Rendering;
+using Snek.Rendering;
 using Snek.Types;
 
 namespace Snek.UI
@@ -35,7 +35,6 @@ namespace Snek.UI
             // Calculate the location of the title bar
             for (var i = 0; i < _text.Length; i++)
                 map.Add(new Position(i, 0), _text[i]);
-
             return map;
         }
     }
