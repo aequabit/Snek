@@ -1,3 +1,12 @@
+/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        TitleBar.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
 using Snek.Rendering;
 using Snek.Types;
 

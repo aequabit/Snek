@@ -1,4 +1,13 @@
-﻿namespace Snek.Types
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Size.cs
+ * Type:        struct
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+namespace Snek.Types
 {
     public struct Size
     {

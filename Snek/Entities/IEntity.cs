@@ -1,4 +1,13 @@
-﻿using Listard;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        IEntity.cs
+ * Type:        Interface
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using Listard;
 using Snek.Types;
 
 namespace Snek.Entities

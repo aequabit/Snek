@@ -1,4 +1,13 @@
-﻿using Listard;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Game.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using Listard;
 using Snek.Entities;
 using Snek.Rendering;
 using Snek.Types;
@@ -99,20 +108,17 @@ namespace Snek.Core
             var snake = new Snake(position, Direction.Right, 5, this);
             snake.OnEntityCollision += (entity, collided) =>
             {
-                switch (collided)
+                if (collided is Snake)
                 {
-                    case Snake _:
-                        Stop("You ran into yourself");
-                        break;
-                    case Food _:
-                    {
-                        Snake.Length++;
-                        _entities.Remove(collided);
+                    Stop("HAMMER TIME!");
 
-                        if (Snake.CycleDelay >= 60)
-                            Snake.CycleDelay -= 10;
-                    }
-                        break;
+                } else if (collided is Food)
+                {
+                    Snake.Length++;
+                    _entities.Remove(collided);
+
+                    if (Snake.CycleDelay >= 60)
+                        Snake.CycleDelay -= 10;
                 }
             };
 
@@ -222,8 +228,11 @@ namespace Snek.Core
                 entity.Update();
 
                 // Render the entity if it implements IRenderable
-                if (entity is IRenderable renderable)
+                if (entity is IRenderable)
+                {
+                    var renderable = entity as IRenderable;
                     _renderer.Render(renderable);
+                }
             }
 
             foreach (var component in _uiComponents)

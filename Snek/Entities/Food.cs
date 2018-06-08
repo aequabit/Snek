@@ -1,4 +1,13 @@
-﻿using Listard;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Food.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using Listard;
 using Snek.Rendering;
 using Snek.Types;
 

@@ -1,4 +1,13 @@
-﻿namespace Snek.Rendering
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        IRenderable.cs
+ * Type:        Interface
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+namespace Snek.Rendering
 {
     public interface IRenderable
     {

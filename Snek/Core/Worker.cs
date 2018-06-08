@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Worker.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using System;
 using System.Threading;
 
 namespace Snek.Core
@@ -73,9 +82,7 @@ namespace Snek.Core
             _running = false;
 
             _shutdownEvent.Set();
-
             _pauseEvent.Set();
-
             _thread.Join();
         }
 

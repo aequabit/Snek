@@ -1,4 +1,13 @@
-﻿using Snek.Core;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        StatusBar.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using Snek.Core;
 using Snek.Rendering;
 using Snek.Types;
 using System;

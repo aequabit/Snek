@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Renderer.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using System;
 using System.Collections.Generic;
 using Snek.Types;
 
@@ -9,8 +18,8 @@ namespace Snek.Rendering
         /// <inheritdoc cref="_compatibility"/>
         public bool Compatibility
         {
-            get => _compatibility;
-            set => _compatibility = value;
+            get {return _compatibility; }
+            set { _compatibility = value; }
         }
 
         /// <summary>

@@ -1,4 +1,13 @@
-﻿using Snek.Rendering;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        IComponent.cs
+ * Type:        Interface
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using Snek.Rendering;
 using Snek.Types;
 
 namespace Snek.UI

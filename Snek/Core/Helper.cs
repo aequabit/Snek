@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Helper.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using System;
 
 namespace Snek.Core
 {

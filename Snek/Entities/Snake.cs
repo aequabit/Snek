@@ -1,4 +1,13 @@
-﻿using Listard;
+﻿/*
+ * ------------------------------
+ * Project:     Snek
+ * Name:        Snake.cs
+ * Type:        Class
+ * Date:        2018-05-04
+ * ------------------------------
+ */
+
+using Listard;
 using System;
 using Snek.Core;
 using Snek.Rendering;
@@ -14,7 +23,7 @@ namespace Snek.Entities
         /// <inheritdoc cref="Length"/>
         public int Length
         {
-            get => _length;
+            get {return _length;}
             set
             {
                 if (_positions.Count() > 1)
@@ -28,8 +37,8 @@ namespace Snek.Entities
         /// <inheritdoc cref="_cycleDelay"/>
         public int CycleDelay
         {
-            get => _cycleDelay;
-            set => _cycleDelay = value;
+            get { return _cycleDelay; }
+            set { _cycleDelay = value; }
         }
 
         /// <inheritdoc cref="IEntity.Positions"/>
