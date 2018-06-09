@@ -6,7 +6,7 @@
 
 * [x] Random positioning at start
 * [x] Using [Listard](https://github.com/aequabit/Listard) for storing entities
-* **fuck off** No usage of .NET classes other than _System.Console_, _System.Timers.Timer_ and _System.Random_
+* [ ] No usage of .NET classes other than _System.Console_, _System.Timers.Timer_ and _System.Random_
 
 # To do:
 * [ ] ? Make the snake independent from the entity list
